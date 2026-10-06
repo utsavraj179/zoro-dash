@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dashboard – ZORO HOST</title>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@600;800&family=Outfit:wght@400;500;600&family=JetBrains+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#050001;--ink:#f6eaec;--mut:#b99ba0;--red:#e8112d;--org:#ff4a1c;--card:rgba(255,255,255,.035);--line:rgba(255,90,110,.18);--glow:rgba(232,17,45,.45)}
+*{box-sizing:border-box;margin:0}
+html{background:var(--bg)}
+body{font-family:Outfit,system-ui,sans-serif;color:var(--ink);line-height:1.6;min-height:100vh}
+body::before{content:"";position:fixed;inset:0;z-index:-1;background:radial-gradient(110% 55% at 50% 0%,#3d0611 0%,transparent 65%),radial-gradient(100% 45% at 50% 100%,#6e0c19 0%,transparent 70%),#050001}
+h1,h2,h3,.logo,.price,.stat b{font-family:Unbounded,system-ui,sans-serif;line-height:1.15}
+header{position:sticky;top:0;z-index:5;padding:12px 12px 0}
+nav{max-width:1000px;margin:auto;display:flex;align-items:center;gap:4px;padding:10px 12px 10px 18px;flex-wrap:wrap;background:rgba(20,4,8,.8);backdrop-filter:blur(12px);border:1px solid var(--line);border-radius:30px}
+.logo{display:flex;align-items:center;gap:10px;color:#fff;font-weight:800;font-size:18px;margin-right:auto;text-decoration:none}
+.logo i{width:30px;height:30px;border-radius:50%;background:radial-gradient(circle,#ff4a1c,#8a0a1a);box-shadow:0 0 14px var(--glow)}
+nav a.l{color:var(--mut);text-decoration:none;padding:6px 12px;font-weight:500;font-size:14px;border-radius:99px}
+nav a.l:hover,nav a.l.on{background:rgba(232,17,45,.18);color:#fff}
+main{max-width:1000px;margin:auto;padding:28px 16px 60px}
+.page{display:none}.page.on{display:block}
+.btn{display:inline-block;background:linear-gradient(90deg,var(--red),var(--org));color:#fff;border:0;padding:12px 24px;font:600 15px Outfit;border-radius:99px;cursor:pointer;text-decoration:none;box-shadow:0 0 28px var(--glow);transition:transform .15s,box-shadow .15s}
+.btn:hover{transform:translateY(-2px);box-shadow:0 0 40px var(--glow)}
+.btn.alt{background:rgba(255,255,255,.04);border:1px solid var(--line);box-shadow:none}
+.btn.red{background:#5a0f18;box-shadow:none;border:1px solid #a3202f}
+.btn:focus-visible,a:focus-visible{outline:3px solid #ffb199;outline-offset:3px}
+.hero{position:relative;overflow:hidden;text-align:center;padding:56px 6px 0;margin-bottom:28px}
+.hero h1{font-size:clamp(28px,9vw,88px);font-weight:800;letter-spacing:-.01em;background:linear-gradient(180deg,#fff 0%,#ff6b81 100%);-webkit-background-clip:text;background-clip:text;color:transparent;margin-bottom:18px}
+.hero p{max-width:520px;margin:0 auto 26px;color:var(--mut);font-size:18px}
+.hero .btns{display:grid;gap:12px;max-width:520px;margin:0 auto}
+.hero .btns .btn{padding:16px 24px;font-size:17px}
+.stats{display:flex;justify-content:center;gap:clamp(20px,6vw,60px);margin:44px 0 26px;position:relative;z-index:1}
+.stat b{display:block;font-size:clamp(20px,5.5vw,34px);font-weight:800}.stat span{color:var(--mut);font-size:15px}
+.arc{position:absolute;left:-30%;width:160%;aspect-ratio:1;top:62%;border-radius:50%;background:#000;border:3px solid #ff4d6a;box-shadow:0 0 90px var(--glow),inset 0 0 60px rgba(232,17,45,.25)}
+.term{position:relative;z-index:1;text-align:left;max-width:640px;margin:0 auto;background:rgba(10,1,4,.92);border:1px solid var(--line);border-radius:28px;overflow:hidden;box-shadow:0 20px 60px #000}
+.term .top{display:flex;gap:8px;align-items:center;padding:16px 20px;border-bottom:1px solid var(--line);font:500 14px "JetBrains Mono",monospace;color:var(--mut)}
+.term .top i{width:12px;height:12px;border-radius:50%;background:#2c1a1e}.term .top i:first-child{background:var(--red)}
+.term .body{padding:20px 22px 26px;font-family:"JetBrains Mono",monospace}
+.term .cmd{font-size:20px}.term .cmd em{color:var(--red);font-style:normal}
+.cur{display:inline-block;width:12px;height:24px;background:var(--red);vertical-align:middle;margin-left:8px;box-shadow:0 0 12px var(--glow);animation:blink 1s steps(2) infinite}
+@keyframes blink{50%{opacity:0}}
+@media(prefers-reduced-motion:reduce){.cur{animation:none}.btn{transition:none}}
+.term .out{margin-top:16px;color:var(--mut);font-size:14px}.term .out b{color:#ff6b81}
+.tag{display:inline-block;border:1px solid #7a1626;border-radius:99px;padding:1px 12px;font:600 12px Outfit;color:#ff8a9a;margin-left:8px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:28px;padding:24px}
+.card h3{font-size:15px;margin-bottom:8px}.card p{color:var(--mut)}
+.price{font-size:26px;font-weight:800;margin:12px 0}.price small{font:500 13px Outfit;color:var(--mut)}
+.card ul{list-style:none;padding:0;margin:12px 0 18px;font-size:14px;color:var(--mut)}.card li{padding:5px 0;border-bottom:1px solid rgba(255,255,255,.06)}
+.card.pop{border-color:#ff4d6a;box-shadow:0 0 40px rgba(232,17,45,.3)}
+h2{font-size:clamp(20px,4.5vw,28px);font-weight:800;margin-bottom:8px}.sub{color:var(--mut);margin-bottom:22px}
+.pay b{display:block;margin-bottom:4px}.pay{color:var(--mut)}
+.pill{display:inline-block;font-size:12px;font-weight:600;padding:2px 12px;border-radius:99px}
+.on-p{background:rgba(60,200,100,.15);color:#6fe39a}.off-p{background:rgba(232,17,45,.18);color:#ff8a9a}
+.srv{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:center}
+.bar{height:8px;background:rgba(255,255,255,.08);border-radius:5px;overflow:hidden;margin:4px 0 10px}.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--red),var(--org))}
+.console{background:#000;border:1px solid var(--line);color:#ff9aa8;font:13px "JetBrains Mono",monospace;padding:14px;border-radius:18px;height:150px;overflow:auto;margin-top:14px}
+.legal h3{margin:22px 0 6px;font-size:14px}.legal p{max-width:70ch;color:var(--mut)}
+select,input{font:inherit;padding:11px 14px;border:1px solid var(--line);border-radius:99px;background:rgba(255,255,255,.05);color:var(--ink);width:100%;max-width:340px}
+select option{background:#1a0509}
+label{font-weight:600;font-size:14px;display:block;margin:12px 0 6px}
+footer{text-align:center;color:var(--mut);font-size:13px;padding:24px}
+</style>
+</head>
+<body>
+<header><nav>
+<a class="logo" href="index.html"><i></i>ZORO HOST</a>
+<a class="l" href="index.html">Home</a><a class="l" href="plans.html">Plans</a><a class="l on" href="dashboard.html">Dashboard</a><a class="l" href="payment.html">Payment</a><a class="l" href="downloads.html">Downloads</a><a class="l" href="terms.html">Terms</a><a class="l" href="privacy.html">Privacy</a>
+</nav></header>
+<main>
+<section class="page on" id="dashboard">
+<h2>Dashboard</h2><p class="sub">Demo data. Connect your panel API to show real servers.</p>
+<div class="card"><div class="srv"><div><h3 id="sName">My Survival World</h3>
+<span class="pill off-p" id="sStat">Offline</span> <span style="font-size:14px;color:var(--mut)" id="sIp">play.yourdomain.com</span></div>
+<div><button class="btn" id="bStart">Start</button> <button class="btn alt" id="bRestart">Restart</button> <button class="btn red" id="bStop">Stop</button></div></div>
+<div class="grid" style="margin-top:16px"><div>RAM <span id="ramT">0 / 4 GB</span><div class="bar"><i id="ramB" style="width:0"></i></div></div>
+<div>CPU <span id="cpuT">0%</span><div class="bar"><i id="cpuB" style="width:0"></i></div></div>
+<div>Players <b id="plr">0 / 20</b></div></div>
+<div class="console" id="con" role="log" aria-live="polite">Server is offline.</div></div>
+<div style="margin-top:16px"><a class="btn" href="plans.html">Upgrade plan</a> <a class="btn alt" href="downloads.html">Get files</a></div></section>
+</main>
+<footer>© 2026 ZORO HOST. Not affiliated with Mojang or Microsoft.</footer>
+<script>
+const CUR="₹";
+const PLANS=[
+ {n:"MINI",r:"1 GB",c:"1 vCPU",d:"10 GB",p:10},
+ {n:"STARTER",r:"2 GB",c:"150% CPU",d:"15 GB",p:20},
+ {n:"BASIC",r:"4 GB",c:"200% CPU",d:"25 GB",p:40},
+ {n:"PLUS",r:"6 GB",c:"250% CPU",d:"40 GB",p:70},
+ {n:"PRO",r:"8 GB",c:"300% CPU",d:"50 GB",p:130},
+ {n:"ULTRA",r:"12 GB",c:"350% CPU",d:"70 GB",p:160},
+ {n:"ADVANCED",r:"16 GB",c:"400% CPU",d:"90 GB",p:200},
+ {n:"TITAN",r:"24 GB",c:"450% CPU",d:"120 GB",p:250},
+ {n:"EXTREME",r:"32 GB",c:"500% CPU",d:"160 GB",p:450},
+ {n:"GOD",r:"48 GB",c:"600% CPU",d:"200 GB",p:590},
+ {n:"GOD PLUS",r:"64 GB",c:"800% CPU",d:"250 GB",p:699}
+];
+const FEATS=["AMD Ryzen 7","NVMe SSD","DDoS Protection","AetherPanel","High Performance"];
+const $=s=>document.querySelector(s);
+const money=p=>p?CUR+p+"/mo":"Free";
+
+// Plans page
+if($("#planGrid")){
+ $("#planGrid").innerHTML=PLANS.map(x=>`<div class="card"><h3>${x.n}</h3>
+ <div class="price">${CUR}${x.p}<small> /month</small></div>
+ <ul><li>${x.r} RAM</li><li>${x.c}</li><li>${x.d} NVMe</li></ul>
+ <a class="btn" href="payment.html?plan=${encodeURIComponent(x.n)}">Choose ${x.n}</a></div>`).join("");
+ $("#featList").innerHTML=FEATS.map(f=>`<span class="pill on-p">${f}</span>`).join(" ");
+}
+
+// Payment page
+if($("#pSel")){
+ $("#pSel").innerHTML=PLANS.map(x=>`<option value="${x.n}">${x.n} – ${x.r} – ${CUR}${x.p}/mo</option>`).join("");
+ const q=new URLSearchParams(location.search).get("plan");
+ if(q&&PLANS.some(p=>p.n===q))$("#pSel").value=q;
+ const tot=()=>{$("#pTot").textContent=money(PLANS.find(p=>p.n===$("#pSel").value).p)};
+ $("#pSel").onchange=tot;tot();
+ document.querySelectorAll("[data-pay]").forEach(b=>b.onclick=()=>{
+  const em=$("#pEmail").value.trim();
+  $("#pMsg").textContent=em?`Order created: ${$("#pSel").value} plan via ${b.dataset.pay}. Connect your payment gateway here.`:"Enter your email before paying."
+ });
+}
+
+// Dashboard page (demo)
+if($("#bStart")){
+ let up=false,t;const con=$("#con");
+ const log=m=>{con.innerHTML+="<br>"+m;con.scrollTop=con.scrollHeight};
+ const render=()=>{
+  $("#sStat").textContent=up?"Online":"Offline";$("#sStat").className="pill "+(up?"on-p":"off-p");
+  const r=up?+(1+Math.random()*2).toFixed(1):0,c=up?Math.round(10+Math.random()*40):0,p=up?Math.floor(Math.random()*12):0;
+  $("#ramT").textContent=r+" / 4 GB";$("#ramB").style.width=r/4*100+"%";
+  $("#cpuT").textContent=c+"%";$("#cpuB").style.width=c+"%";$("#plr").textContent=p+" / 20";
+ };
+ const start=()=>{if(up)return;log("Starting server...");setTimeout(()=>{up=true;log("Done! Server is online.");render();t=setInterval(render,3000)},1200)};
+ const stop=()=>{if(!up)return;up=false;clearInterval(t);log("Server stopped.");render()};
+ $("#bStart").onclick=start;$("#bStop").onclick=stop;
+ $("#bRestart").onclick=()=>{stop();setTimeout(start,800)};
+}
+
+// Downloads page
+if($("#dlGrid")){
+ const FILES=[
+  {n:"server.properties",d:"Base config: 20 slots, normal difficulty.",c:"motd=Welcome to my server\nmax-players=20\ndifficulty=normal\ngamemode=survival\nview-distance=10\nonline-mode=true\nserver-port=25565\n"},
+  {n:"start.sh",d:"Start script for Linux or macOS with 4 GB RAM.",c:"#!/bin/bash\njava -Xms2G -Xmx4G -jar server.jar nogui\n"},
+  {n:"start.bat",d:"Start script for Windows with 4 GB RAM.",c:"@echo off\njava -Xms2G -Xmx4G -jar server.jar nogui\npause\n"},
+  {n:"eula.txt",d:"Accepts the Minecraft EULA so your server can start.",c:"eula=true\n"},
+  {n:"ops-guide.txt",d:"How to connect, op yourself and make backups.",c:"1. Connect with your server IP in Multiplayer.\n2. Run: op YourName in the console.\n3. Backup: stop the server and zip the world folder.\n"}
+ ];
+ $("#dlGrid").innerHTML=FILES.map((f,i)=>`<div class="card"><h3>${f.n}</h3><p style="font-size:14px;margin:6px 0 14px">${f.d}</p><button class="btn" data-dl="${i}">Download</button></div>`).join("");
+ document.querySelectorAll("[data-dl]").forEach(b=>b.onclick=()=>{
+  const f=FILES[b.dataset.dl],u=URL.createObjectURL(new Blob([f.c],{type:"text/plain"})),a=document.createElement("a");
+  a.href=u;a.download=f.n;document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(u)
+ });
+}
+</script>
+</body>
+</html>
